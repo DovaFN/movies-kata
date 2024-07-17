@@ -1,0 +1,51 @@
+.movieList-item {
+  display: flex;
+  width: 451px;
+  max-height: 279px;
+  height: 279px;
+  box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15);
+}
+
+.movieList-image {
+  height: 279px;
+  width: 183px;
+}
+
+.movieList-container {
+  display: grid;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 22px;
+  width: 268px;
+  padding: 10px 20px;
+  row-gap: 0.5rem;
+  grid-template-rows: min-content min-content min-content minmax(0, 129px);
+}
+
+.movieList-header {
+  font-size: 20px;
+  line-height: 28px;
+  max-width: 100%;
+}
+
+.movieList-description {
+  overflow: hidden;
+}
+
+.movieList-date {
+  color: #827e7e;
+}
+
+.zhanre {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.65);
+  line-height: 14.52px;
+  background-color: #fafafa;
+  border: 1px solid rgba(217, 217, 217, 1);
+  border-radius: 2px;
+  margin-right: 8px;
+}
+
+.zhanre:hover {
+  cursor: pointer;
+}

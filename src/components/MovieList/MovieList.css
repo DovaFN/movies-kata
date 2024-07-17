@@ -1,0 +1,17 @@
+ul,
+ul li,
+ul ul li {
+  margin: 0;
+  padding: 0;
+  text-indent: 0;
+  list-style-type: none;
+}
+
+.movieList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 36px;
+  margin: 0 auto;
+  padding: 10px 35px 40px 35px;
+  background-color: #ffffff;
+}
