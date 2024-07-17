@@ -21,7 +21,7 @@ export default class MovieService {
   }
 
   async getMovies() {
-    const movies = await this.findMoviesByKeyword('Naruto')
+    const movies = await this.findMoviesByKeyword('Return')
     const arr = movies.results.slice()
     return arr
   }

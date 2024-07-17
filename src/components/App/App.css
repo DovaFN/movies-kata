@@ -1,11 +1,11 @@
 @font-face {
-  font-family: "Inter UI";
+  font-family: 'Inter UI';
   src: url(../../font/Inter-Regular.ttf);
 }
 
 * {
   box-sizing: border-box;
-  font-family: "Inter UI";
+  font-family: 'Inter UI';
   font-weight: 400;
   margin: 0;
   vertical-align: top;

@@ -12,6 +12,7 @@ ul ul li {
   flex-wrap: wrap;
   gap: 36px;
   margin: 0 auto;
+  justify-content: center;
   padding: 10px 35px 40px 35px;
   background-color: #ffffff;
 }
