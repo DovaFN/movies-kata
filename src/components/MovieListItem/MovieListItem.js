@@ -20,7 +20,7 @@ export default class MovieListItem extends Component {
     const movie = {
       title,
       date: releaseDate ? format(new Date(Date.parse(releaseDate)), 'MMMM dd, yyyy') : releaseDate,
-      imgSrc: releaseDate ? this._imageUrlBasic + backropPath : null,
+      imgSrc: backropPath ? this._imageUrlBasic + backropPath : null,
       overview: overview.length > 170 ? this.fitDescription(overview) : overview,
     }
 

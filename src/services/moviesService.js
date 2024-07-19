@@ -10,8 +10,8 @@ export default class MovieService {
     },
   }
 
-  async findMoviesByKeyword(keyword) {
-    const url = `${this._apiBase}/search/movie?query=${keyword}&page=1`
+  async findMoviesByKeyword(keyword, page) {
+    const url = `${this._apiBase}/search/movie?query=${keyword}&page=${page}`
     const response = await fetch(url, this.options)
     if (response.ok) {
       const res = await response.json()
@@ -20,9 +20,8 @@ export default class MovieService {
     throw new Error(`Could not fetch ${url}, received ${response.status}`)
   }
 
-  async getMovies() {
-    const movies = await this.findMoviesByKeyword('Return')
-    const arr = movies.results.slice()
-    return arr
+  async getMovies(keyword, page) {
+    const movies = await this.findMoviesByKeyword(keyword, page)
+    return movies
   }
 }
