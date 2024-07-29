@@ -8,11 +8,20 @@ import './MovieList.css'
 
 export default class MovieList extends Component {
   render() {
-    const { data, loading, error, totalResults } = this.props
+    const { data, loading, error, totalResults, guestSessionId, getMovieRating, onChangeRating } = this.props
 
     const moviesArr = data.map((el) => {
       const { id, ...itemProps } = el
-      return <MovieListItem key={id} {...itemProps} />
+      return (
+        <MovieListItem
+          key={id}
+          id={id}
+          guestSessionId={guestSessionId}
+          getMovieRating={getMovieRating}
+          onChangeRating={onChangeRating}
+          {...itemProps}
+        />
+      )
     })
     const getContent = () => {
       if (loading) {

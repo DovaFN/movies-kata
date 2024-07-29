@@ -1,35 +1,87 @@
-import React, { Component } from 'react'
+import React, { Children, Component } from 'react'
+import { Tabs } from 'antd'
 import { Online, Offline } from 'react-detect-offline'
 
 import './App.css'
-import MovieList from '../MovieList/MovieList'
-import ErrorAlert from '../ErrorAlert/ErrorAlert'
-import SearchPanel from '../SearchPanel/SearchPanel'
 import MovieService from '../../services/moviesService'
+import PageSearch from '../PageSearch/PageSearch'
+import ErrorAlert from '../ErrorAlert/ErrorAlert'
+import { Provider, Consumer } from '../MovieAppContext/MovieAppContext'
+import PageRated from '../PageRated/PageRated'
 import Paginator from '../Paginator/Paginator'
 
 export default class App extends Component {
-  movieService = new MovieService()
-
   state = {
+    guestSessionId: null,
+    searching: true,
     searchValue: null,
     data: [],
+    rating: {},
     loading: true,
     error: false,
+    zhanres: [],
     current: 1,
     totalPages: null,
     totalResults: null,
   }
 
+  movieService = new MovieService()
+
   componentDidMount() {
-    this.searchMovies()
+    this.movieService
+      .startGuestSession()
+      .then((value) =>
+        this.setState({
+          guestSessionId: value,
+        })
+      )
+      .then(() => this.movieService.getZhanres())
+      .then((result) => {
+        this.setState({
+          zhanres: result,
+        })
+      })
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { searchValue, current } = this.state
+    const { searchValue, current, searching } = this.state
+    if (!searching && current !== prevState.current) {
+      this.getRatedMovies()
+    }
     if (searchValue !== prevState.searchValue || current !== prevState.current) {
       this.searchMovies()
     }
+  }
+
+  onChangeRating = (id, value) => {
+    const { rating } = this.state
+    const newRated = JSON.parse(JSON.stringify(rating))
+    newRated[id] = value
+    this.setState({
+      rating: newRated,
+    })
+  }
+
+  getRatedMovies = () => {
+    const { current, guestSessionId } = this.state
+    this.movieService
+      .getRatedMovies(guestSessionId, current)
+      .then((res) => {
+        const { results, page, total_pages: totalPages, total_results: totalResults } = res
+        this.setState(() => ({
+          data: results.slice(),
+          current: page,
+          totalPages,
+          totalResults,
+          loading: false,
+        }))
+      })
+      .catch(this.onError)
+  }
+
+  getMovieRating = (id) => {
+    const { rating } = this.state
+    return rating[id]
   }
 
   onError = () => {
@@ -62,15 +114,57 @@ export default class App extends Component {
     this.setState({ current: page })
   }
 
+  onChange = (e) => {
+    this.setState({
+      searching: e === '1',
+    })
+  }
+
   render() {
-    const { data, error, loading, current, totalPages, totalResults } = this.state
+    const { guestSessionId, searching, data, error, loading, current, totalPages, totalResults, zhanres } = this.state
+    const items = [
+      {
+        key: '1',
+        label: 'Search',
+      },
+      {
+        key: '2',
+        label: 'Rated',
+      },
+    ]
+    const page = searching ? (
+      <PageSearch
+        error={error}
+        loading={loading}
+        data={data}
+        onChangeRating={this.onChangeRating}
+        getMovieRating={this.getMovieRating}
+        totalResults={totalResults}
+        onSearching={this.onSearching}
+        guestSessionId={guestSessionId}
+      />
+    ) : (
+      <PageRated
+        error={error}
+        loading={loading}
+        data={data}
+        onChangeRating={this.onChangeRating}
+        getMovieRating={this.getMovieRating}
+        getRatedMovies={this.getRatedMovies}
+        totalResults={totalResults}
+        guestSessionId={guestSessionId}
+      />
+    )
     return (
       <main className="container">
         <Online>
-          <SearchPanel onSearching={this.onSearching} />
-          <MovieList error={error} loading={loading} data={data} totalResults={totalResults} />
-          <Paginator onChanging={this.onChangingPage} current={current} totalPages={totalPages} />
+          <Provider value={zhanres}>
+            <Tabs indicator={{ size: 73 }} centered className="tabs" items={items} onChange={this.onChange} />
+            {page}
+            <Paginator onChanging={this.onChangingPage} current={current} totalPages={totalPages} />
+          </Provider>
         </Online>
+
         <Offline>
           <ErrorAlert
             type="error"

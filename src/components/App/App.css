@@ -11,10 +11,6 @@
   vertical-align: top;
 }
 
-h1 {
-  margin: 0;
-}
-
 body {
   margin: 0;
   padding: 0;
@@ -22,8 +18,13 @@ body {
 }
 
 .container {
-  padding-top: 85px;
   background-color: #ffffff;
   margin: 0 auto;
   max-width: 1010px;
+}
+
+.tabs {
+  width: 146px;
+  height: 54px;
+  margin: auto;
 }
