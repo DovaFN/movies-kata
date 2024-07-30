@@ -5,6 +5,7 @@ import { format } from 'date-fns'
 import './MovieListItem.css'
 
 import { Consumer } from '../MovieAppContext/MovieAppContext'
+import logo404 from '../../img/hqdefault.jpg'
 import MovieService from '../../services/moviesService'
 
 export default class MovieListItem extends Component {
@@ -22,7 +23,7 @@ export default class MovieListItem extends Component {
   fitDescription = (text) => {
     const array = text.split('')
     const fitArr = []
-    for (let i = 0; i < 130; i += 1) {
+    for (let i = 0; i < 140; i += 1) {
       fitArr.push(array[i])
     }
     const res = `${fitArr.slice(0, fitArr.lastIndexOf(' ')).join('')}...`
@@ -43,8 +44,8 @@ export default class MovieListItem extends Component {
     const movie = {
       title,
       date: releaseDate ? format(new Date(Date.parse(releaseDate)), 'MMMM dd, yyyy') : releaseDate,
-      imgSrc: backropPath ? this._imageUrlBasic + backropPath : null,
-      overview: overview.length > 150 ? this.fitDescription(overview) : overview,
+      imgSrc: backropPath ? this._imageUrlBasic + backropPath : logo404,
+      overview: overview.length > 140 ? this.fitDescription(overview) : overview,
       rating: getMovieRating(id) || '0',
     }
 
@@ -58,10 +59,10 @@ export default class MovieListItem extends Component {
 
     let className = 'movieList-header'
 
-    if (title.length > 35) {
+    if (title.length > 20) {
       className = 'movieList-header fitted'
     }
-    if (title.length > 40) {
+    if (title.length > 30) {
       className = 'movieList-header fitted-more'
     }
 
@@ -76,7 +77,7 @@ export default class MovieListItem extends Component {
           })
           genreNames.length = 3
           const genreContent = genreNames.map((el) => (
-            <button className="zhanre" type="button">
+            <button key={`${id}${el}`} className="zhanre" type="button">
               {el}
             </button>
           ))
@@ -107,7 +108,7 @@ function MovieView({ movie, onChange, className, style, genreContent }) {
           <span className="movieList-rating">{rating}</span>
         </div>
         <div className="movieList-date">{date}</div>
-        <label>{genreContent}</label>
+        <label className="movieList-zhanres">{genreContent}</label>
         <p className="movieList-description">{overview}</p>
         <Rate className="movieList-rate" onChange={onChange} allowHalf count={10} defaultValue={rating} />
       </div>

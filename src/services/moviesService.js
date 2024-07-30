@@ -70,11 +70,5 @@ export default class MovieService {
     }
 
     const res = await fetch(`${this._apiBase}/movie/${id}/rating?&guest_session_id=${guestSessionId}`, options)
-    if (res.ok) {
-      console.log('Succeed')
-    }
-    if (!res.ok) {
-      console.log('Error')
-    }
   }
 }

@@ -13,6 +13,9 @@ ul ul li {
   flex-wrap: wrap;
   gap: 36px;
   margin: 0 auto;
+  padding: 36px 0;
+  @media (max-width: 720px) {
+    padding: 10px 0;
+  }
   justify-content: center;
-  padding: 36px 35px 40px 35px;
 }

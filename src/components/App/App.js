@@ -17,7 +17,7 @@ export default class App extends Component {
     searchValue: null,
     data: [],
     rating: {},
-    loading: true,
+    loading: false,
     error: false,
     zhanres: [],
     current: 1,
